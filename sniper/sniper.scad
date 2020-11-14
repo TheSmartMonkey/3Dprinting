@@ -2,7 +2,7 @@ $fn = 100;
 
 /** VARIABLES **/
 // Rail
-LONGEUR_RAIL = 125.23;
+LONGEUR_RAIL = 124.9;
 LARGEUR_RAIL = 21.2;
 HAUTEUR_RAIL = 8.6;
 
@@ -26,11 +26,19 @@ module canonHook() {
 }
 
 
-/** Porte Lunette **/
+/** Holder **/
 // Rail
 module rail() {
-    cube([LONGEUR_RAIL, LARGEUR_RAIL, HAUTEUR_RAIL]);
-    translate([0, 0, HAUTEUR_RAIL]) encocheOfRail();
+    difference() {
+        cube([LONGEUR_RAIL, LARGEUR_RAIL, HAUTEUR_RAIL]);
+        translate([-1, 22, 2.75]) rotate([40, 0, 0]) cube([LONGEUR_RAIL + 2, 20, 5]); // Border left
+    }
+
+    separator = 0;
+    for (i = [0:1:12]) {
+        translate([separator, 0, HAUTEUR_RAIL]) encocheOfRail();
+        separator = i * (SEPARATION_ENCOCHE + LONGEUR_ENCOCHE);
+    }
 }
 
 module encocheOfRail() {
@@ -38,9 +46,9 @@ module encocheOfRail() {
         difference() {
             difference() {
                 cube([LONGEUR_ENCOCHE, LARGEUR_RAIL, HAUTEUR_ENCOCHE]); // Primary shape
-                translate([-1, 0, 0]) rotate([40, 0, 0]) cube([10, 20, 5]); // Border
+                translate([-1, 0, 0]) rotate([40, 0, 0]) cube([10, 20, 5]); // Border right
             }
-            translate([-1, 15.25, 5]) rotate([-40, 0, 0]) cube([10, 20, 5]); // Border
+            translate([-1, 15.25, 5]) rotate([-40, 0, 0]) cube([10, 20, 5]); // Border left
         }
         translate([-1, (LARGEUR_ENCOCHE + HOLE_ENCOCHE) / 2, -1]) cube([10, HOLE_ENCOCHE, 5]); // Hole
     }
