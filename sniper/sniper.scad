@@ -1,6 +1,15 @@
 $fn = 100;
 
 /** VARIABLES **/
+// Hook
+HOOK_LENGTH = 44;
+HOOK_WIDTH = 12;
+HOOK_HEIGHT = 6.5;
+HOOK_FIX_HEIGHT = 5;
+HOOK_HOLE = 2.5;
+HOOK_HOLE_RIGHT = 6.5;
+HOOK_HOLE_LEFT = 35;
+
 // Rail
 RAIL_LENGTH = 124.9;
 RAIL_WIDTH = 21.2;
@@ -14,14 +23,19 @@ ENCOCHE_SEPARATOR = 5.23;
 ENCOCHE_ANGLE_SIZE = (RAIL_WIDTH - ENCOCHE_WIDTH) / 2; // =2.8
 ENCOCHE_HOLE = 3;
 
-// Hook
-HOOK_LENGTH = 44;
-HOOK_WIDTH = 12;
-HOOK_HEIGHT = 6.5;
-HOOK_FIX_HEIGHT = 5;
-HOOK_HOLE = 2.5;
-HOOK_HOLE_RIGHT = 6.5;
-HOOK_HOLE_LEFT = 35;
+// Weapon fix
+FRONT_WEAPON_FIX_LENGTH = 130;
+BACK_WEAPON_FIX_LENGTH = 170;
+WEAPON_SEPARATOR = FRONT_WEAPON_FIX_LENGTH + (BACK_WEAPON_FIX_LENGTH - HOOK_LENGTH);
+WEAPON_FIX_WIDTH = 15;
+WEAPON_FIX_HEIGHT = 30;
+
+// Weapon fix holes
+FRONT_WEAPON = 70;
+FRONT_HOLE = 15;
+BACK_HOLE_LENGHT = 98;
+BACK_HOLE_WIDTH = 8;
+BACK_HOLE_HEIGHT = 10;
 
 /** Canon hook **/
 // Core
@@ -54,6 +68,14 @@ module fixHook(height, raduis) {
         translate([-5, -15, - raduis - 1]) cube([5, 20, 20]);
     }
 }
+
+/** Front Weapon Fix **/
+module weaponFix() {
+    difference() {
+        translate([0, 0, 0]) cube([FRONT_WEAPON_FIX_LENGTH, WEAPON_FIX_WIDTH, WEAPON_FIX_HEIGHT + 6]);
+    }
+}
+
 
 /** Holder **/
 // Rail : https://pinshape.com/items/53040-3d-printed-kar98k-picattiny-rail
@@ -89,13 +111,14 @@ module encocheRailPolygon() {
     ]);
 }
 
-
 /** VIEW **/
-assembling = false;
+assembling = true;
 if (assembling) {
-    canonHook();
-    translate([0, 50, 0]) rail();
+    weaponFix();
+    translate([0, WEAPON_FIX_WIDTH - ENCOCHE_LENGTH / 2, WEAPON_FIX_HEIGHT]) rail();
+    translate([WEAPON_SEPARATOR, HOOK_WIDTH / 2, 0]) rotate([90, 0, 0]) canonHook();
 } else {
     canonHook();
-    // translate([0, 50, 0]) rail();
+    translate([0, 50, 0]) rail();
+    translate([0, 100, 0]) weaponFix();
 }
