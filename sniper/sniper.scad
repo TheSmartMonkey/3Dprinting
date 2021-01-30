@@ -1,6 +1,6 @@
 $fn = 100;
 
-/** VARIABLES **/
+/** MESURSES **/
 // Hook
 HOOK_LENGTH = 44;
 HOOK_WIDTH = 12;
@@ -30,9 +30,13 @@ WEAPON_SEPARATOR = FRONT_WEAPON_FIX_LENGTH + (BACK_WEAPON_FIX_LENGTH - HOOK_LENG
 WEAPON_FIX_WIDTH = 15;
 WEAPON_FIX_HEIGHT = 30;
 
-// Weapon fix holes
+// Front weapon fix holes
 FRONT_WEAPON = 70;
 FRONT_HOLE = 15;
+FRONT_HOLE_DEPTH = 5;
+FRONT_HOLE_HEIGHT = 2;
+
+// Back weapon fix holes
 BACK_HOLE_LENGHT = 98;
 BACK_HOLE_WIDTH = 8;
 BACK_HOLE_HEIGHT = 10;
@@ -72,7 +76,8 @@ module fixHook(height, raduis) {
 /** Front Weapon Fix **/
 module weaponFix() {
     difference() {
-        translate([0, 0, 0]) cube([FRONT_WEAPON_FIX_LENGTH, WEAPON_FIX_WIDTH, WEAPON_FIX_HEIGHT + 6]);
+        cube([FRONT_WEAPON_FIX_LENGTH, WEAPON_FIX_WIDTH, WEAPON_FIX_HEIGHT + 6]);
+        translate([-5, FRONT_HOLE_DEPTH, FRONT_HOLE_HEIGHT]) cube([FRONT_WEAPON_FIX_LENGTH + 20, WEAPON_FIX_WIDTH, WEAPON_FIX_HEIGHT - 5]);
     }
 }
 
