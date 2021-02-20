@@ -37,23 +37,26 @@ FRONT_HOLE_DEPTH = 5;
 FRONT_HOLE_HEIGHT = 2;
 
 // Back weapon fix holes
-BACK_HOLE_LENGHT = 98;
+BACK_FIX_LENGHT = 98;
+BACK_HOLE_LENGHT = 110;
 BACK_HOLE_WIDTH = 8;
 BACK_HOLE_HEIGHT = 10;
 
 /** Canon hook **/
 // Core
 module canonHook() {
-    union() {
-        difference() {
-            difference() {  
-                cube([HOOK_LENGTH, HOOK_WIDTH, HOOK_HEIGHT]);
-                translate([HOOK_HOLE_LEFT - 4, 2, -1]) cube([HOOK_WIDTH - 3, HOOK_WIDTH - 4, 20]);
+    color("LightGreen") {
+        union() {
+            difference() {
+                difference() {  
+                    cube([HOOK_LENGTH, HOOK_WIDTH, HOOK_HEIGHT]);
+                    translate([HOOK_HOLE_LEFT - 4, 2, -1]) cube([HOOK_WIDTH - 3, HOOK_WIDTH - 4, 20]);
+                }
+                translate([HOOK_HOLE_LEFT, 20, HOOK_HEIGHT / 2]) rotate([90, 0, 0]) cylinder(h=30, r=HOOK_HOLE);
             }
-            translate([HOOK_HOLE_LEFT, 20, HOOK_HEIGHT / 2]) rotate([90, 0, 0]) cylinder(h=30, r=HOOK_HOLE);
+            translate([4, HOOK_WIDTH / 2 + 1.5 / 2, HOOK_HEIGHT]) curveHook(1.5, HOOK_FIX_HEIGHT);
+            translate([HOOK_HOLE_LEFT - HOOK_FIX_HEIGHT - 4 , HOOK_WIDTH - 4 +2, HOOK_HEIGHT]) fixHook(HOOK_WIDTH - 4, HOOK_FIX_HEIGHT);
         }
-        translate([4, HOOK_WIDTH / 2 + 1.5 / 2, HOOK_HEIGHT]) curveHook(1.5, HOOK_FIX_HEIGHT);
-        translate([HOOK_HOLE_LEFT - HOOK_FIX_HEIGHT - 4 , HOOK_WIDTH - 4 +2, HOOK_HEIGHT]) fixHook(HOOK_WIDTH - 4, HOOK_FIX_HEIGHT);
     }
 }
 
@@ -74,24 +77,45 @@ module fixHook(height, raduis) {
 }
 
 /** Front Weapon Fix **/
-module weaponFix() {
-    difference() {
-        cube([FRONT_WEAPON_FIX_LENGTH, WEAPON_FIX_WIDTH, WEAPON_FIX_HEIGHT + 6]);
-        translate([-5, FRONT_HOLE_DEPTH, FRONT_HOLE_HEIGHT]) cube([FRONT_WEAPON_FIX_LENGTH + 20, WEAPON_FIX_WIDTH, WEAPON_FIX_HEIGHT - 5]);
+module weaponFrontFix() {
+    color("IndianRed") {
+        difference() {
+            difference() {
+                cube([FRONT_WEAPON_FIX_LENGTH, WEAPON_FIX_WIDTH, WEAPON_FIX_HEIGHT + 6]);
+                translate([-5, FRONT_HOLE_DEPTH, FRONT_HOLE_HEIGHT]) cube([FRONT_WEAPON_FIX_LENGTH + 20, WEAPON_FIX_WIDTH, WEAPON_FIX_HEIGHT - 5]);
+            }
+            balckHole();
+        }
     }
 }
 
+module weaponBackFix() {
+    color("LightBlue") {
+        difference() {
+            union() {
+                translate([FRONT_WEAPON_FIX_LENGTH, 0, 0]) cube([BACK_FIX_LENGHT + 2, ENCOCHE_WIDTH / 2, WEAPON_FIX_HEIGHT + 6]);
+            }
+            balckHole();
+        }
+    }
+}
+
+module balckHole() {
+    translate([125, -0.1, -0.1]) cube([BACK_HOLE_LENGHT - 20, BACK_HOLE_WIDTH + 10, BACK_HOLE_HEIGHT]);
+}
 
 /** Holder **/
 // Rail : https://pinshape.com/items/53040-3d-printed-kar98k-picattiny-rail
 module rail() {
-    translate([0, ENCOCHE_LENGTH / 2, 0]) cube([RAIL_LENGTH, RAIL_WIDTH - ENCOCHE_LENGTH, RAIL_HEIGHT]);
+    color("LightGrey") {
+        translate([0, ENCOCHE_LENGTH / 2, 0]) cube([RAIL_LENGTH, RAIL_WIDTH - ENCOCHE_LENGTH, RAIL_HEIGHT]);
 
-    // Create all the encoches
-    separator = 0;
-    for (i = [0:1:12]) {
-        translate([separator, RAIL_WIDTH / 2, RAIL_HEIGHT]) rotate([90, 0, 90]) encocheRail();
-        separator = i * (ENCOCHE_SEPARATOR + ENCOCHE_LENGTH);
+        // Create all the encoches
+        separator = 0;
+        for (i = [0:1:12]) {
+            translate([separator, RAIL_WIDTH / 2, RAIL_HEIGHT]) rotate([90, 0, 90]) encocheRail();
+            separator = i * (ENCOCHE_SEPARATOR + ENCOCHE_LENGTH);
+        }
     }
 }
 
@@ -119,11 +143,13 @@ module encocheRailPolygon() {
 /** VIEW **/
 assembling = true;
 if (assembling) {
-    weaponFix();
+    weaponFrontFix();
+    weaponBackFix();
     translate([0, WEAPON_FIX_WIDTH - ENCOCHE_LENGTH / 2, WEAPON_FIX_HEIGHT]) rail();
-    translate([WEAPON_SEPARATOR, HOOK_WIDTH / 2, 0]) rotate([90, 0, 0]) canonHook();
+    translate([FRONT_WEAPON_FIX_LENGTH + BACK_FIX_LENGHT, (HOOK_WIDTH / 2) + 0.5, 0]) rotate([90, 0, 0]) canonHook();
 } else {
     canonHook();
     translate([0, 50, 0]) rail();
-    translate([0, 100, 0]) weaponFix();
+    translate([0, 100, 0]) weaponFrontFix();
+    translate([0, 200, 0]) weaponBackFix();
 }
