@@ -85,10 +85,13 @@ module weaponFrontFix() {
     color("IndianRed") {
         difference() {
             difference() {
-                cube([FRONT_WEAPON_FIX_LENGTH, WEAPON_FIX_WIDTH, WEAPON_FIX_HEIGHT + 6]);
-                translate([-5, FRONT_HOLE_DEPTH, FRONT_HOLE_HEIGHT]) cube([FRONT_WEAPON_FIX_LENGTH + 20, WEAPON_FIX_WIDTH, WEAPON_FIX_HEIGHT - 5]);
+                difference() {
+                    cube([FRONT_WEAPON_FIX_LENGTH, WEAPON_FIX_WIDTH, WEAPON_FIX_HEIGHT + 6]);
+                    translate([-5, FRONT_HOLE_DEPTH, FRONT_HOLE_HEIGHT]) cube([FRONT_WEAPON + 20, WEAPON_FIX_WIDTH, WEAPON_FIX_HEIGHT - 5]);
+                }
+                balckHole();
             }
-            balckHole();
+            metalBarsHole();
         }
     }
 }
@@ -96,10 +99,13 @@ module weaponFrontFix() {
 module weaponBackFix() {
     color("LightBlue") {
         difference() {
-            union() {
-                translate([FRONT_WEAPON_FIX_LENGTH, 0, -6]) cube([BACK_FIX_LENGHT + 2, ENCOCHE_WIDTH / 2, WEAPON_FIX_HEIGHT + 6]);
+            difference() {
+                union() {
+                    translate([FRONT_WEAPON_FIX_LENGTH, 0, -6]) cube([BACK_FIX_LENGHT + 2, ENCOCHE_WIDTH / 2, WEAPON_FIX_HEIGHT + 6]);
+                }
+                balckHole();
             }
-            balckHole();
+            metalBarsHole();
         }
     }
 }
@@ -111,8 +117,8 @@ module balckHole() {
 module metalBarsHole() {
     middle = FRONT_WEAPON_FIX_LENGTH - METAL_BAR_HEIGHT / 2;
     centerWidth = (ENCOCHE_WIDTH / 2) / 2;
-    translate([middle, centerWidth, 20]) rotate([0, 90, 0]) cylinder(h=METAL_BAR_HEIGHT, r=METAL_BAR_RADIUS);
-    translate([middle, centerWidth, 10]) rotate([0, 90, 0]) cylinder(h=METAL_BAR_HEIGHT, r=METAL_BAR_RADIUS);
+    translate([middle, centerWidth, 25]) rotate([0, 90, 0]) cylinder(h=METAL_BAR_HEIGHT, r=METAL_BAR_RADIUS);
+    translate([middle, centerWidth, 15]) rotate([0, 90, 0]) cylinder(h=METAL_BAR_HEIGHT, r=METAL_BAR_RADIUS);
 }
 
 /** Holder **/
@@ -154,7 +160,6 @@ module encocheRailPolygon() {
 /** VIEW **/
 assembling = true;
 if (assembling) {
-    // metalBarsHole();
     weaponFrontFix();
     weaponBackFix();
     translate([0, WEAPON_FIX_WIDTH - ENCOCHE_LENGTH / 2, WEAPON_FIX_HEIGHT]) rail();
