@@ -42,6 +42,10 @@ BACK_HOLE_LENGHT = 110;
 BACK_HOLE_WIDTH = 8;
 BACK_HOLE_HEIGHT = 10;
 
+// Metal barres
+METAL_BAR_RADIUS = 2.5;
+METAL_BAR_HEIGHT = 20;
+
 /** Canon hook **/
 // Core
 module canonHook() {
@@ -93,7 +97,7 @@ module weaponBackFix() {
     color("LightBlue") {
         difference() {
             union() {
-                translate([FRONT_WEAPON_FIX_LENGTH, 0, 0]) cube([BACK_FIX_LENGHT + 2, ENCOCHE_WIDTH / 2, WEAPON_FIX_HEIGHT + 6]);
+                translate([FRONT_WEAPON_FIX_LENGTH, 0, -6]) cube([BACK_FIX_LENGHT + 2, ENCOCHE_WIDTH / 2, WEAPON_FIX_HEIGHT + 6]);
             }
             balckHole();
         }
@@ -101,7 +105,14 @@ module weaponBackFix() {
 }
 
 module balckHole() {
-    translate([125, -0.1, -0.1]) cube([BACK_HOLE_LENGHT - 20, BACK_HOLE_WIDTH + 10, BACK_HOLE_HEIGHT]);
+    translate([125, -0.1, -10]) cube([BACK_HOLE_LENGHT - 20, BACK_HOLE_WIDTH + 10, BACK_HOLE_HEIGHT + 10]);
+}
+
+module metalBarsHole() {
+    middle = FRONT_WEAPON_FIX_LENGTH - METAL_BAR_HEIGHT / 2;
+    centerWidth = (ENCOCHE_WIDTH / 2) / 2;
+    translate([middle, centerWidth, 20]) rotate([0, 90, 0]) cylinder(h=METAL_BAR_HEIGHT, r=METAL_BAR_RADIUS);
+    translate([middle, centerWidth, 10]) rotate([0, 90, 0]) cylinder(h=METAL_BAR_HEIGHT, r=METAL_BAR_RADIUS);
 }
 
 /** Holder **/
@@ -143,10 +154,11 @@ module encocheRailPolygon() {
 /** VIEW **/
 assembling = true;
 if (assembling) {
+    // metalBarsHole();
     weaponFrontFix();
     weaponBackFix();
     translate([0, WEAPON_FIX_WIDTH - ENCOCHE_LENGTH / 2, WEAPON_FIX_HEIGHT]) rail();
-    translate([FRONT_WEAPON_FIX_LENGTH + BACK_FIX_LENGHT, (HOOK_WIDTH / 2) + 0.5, 0]) rotate([90, 0, 0]) canonHook();
+    translate([FRONT_WEAPON_FIX_LENGTH + BACK_FIX_LENGHT, 0, (ENCOCHE_WIDTH / 2) - 1.8]) rotate([-90, 0, 0]) canonHook();
 } else {
     canonHook();
     translate([0, 50, 0]) rail();
