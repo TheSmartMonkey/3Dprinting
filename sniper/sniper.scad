@@ -50,16 +50,16 @@ METAL_BAR_HEIGHT = 20;
 // Core
 module canonHook() {
     color("LightGreen") {
-        union() {
-            difference() {
-                difference() {  
-                    cube([HOOK_LENGTH, HOOK_WIDTH, HOOK_HEIGHT]);
-                    translate([HOOK_HOLE_LEFT - 4, 2, -1]) cube([HOOK_WIDTH - 3, HOOK_WIDTH - 4, 20]);
-                }
+        difference() {
+            union() {
+                cube([HOOK_LENGTH, HOOK_WIDTH, HOOK_HEIGHT]);
+                translate([4, HOOK_WIDTH / 2 + 1.5 / 2, HOOK_HEIGHT]) curveHook(1.5, HOOK_FIX_HEIGHT);
+                translate([HOOK_HOLE_LEFT - HOOK_FIX_HEIGHT - 4 , HOOK_WIDTH - 4 +2, HOOK_HEIGHT]) fixHook(HOOK_WIDTH - 4, HOOK_FIX_HEIGHT);
+            }
+            union() {
+                translate([HOOK_HOLE_LEFT - 4, 2, -1]) cube([HOOK_WIDTH - 3, HOOK_WIDTH - 4, 20]);
                 translate([HOOK_HOLE_LEFT, 20, HOOK_HEIGHT / 2]) rotate([90, 0, 0]) cylinder(h=30, r=HOOK_HOLE);
             }
-            translate([4, HOOK_WIDTH / 2 + 1.5 / 2, HOOK_HEIGHT]) curveHook(1.5, HOOK_FIX_HEIGHT);
-            translate([HOOK_HOLE_LEFT - HOOK_FIX_HEIGHT - 4 , HOOK_WIDTH - 4 +2, HOOK_HEIGHT]) fixHook(HOOK_WIDTH - 4, HOOK_FIX_HEIGHT);
         }
     }
 }
@@ -84,14 +84,12 @@ module fixHook(height, raduis) {
 module weaponFrontFix() {
     color("IndianRed") {
         difference() {
-            difference() {
-                difference() {
-                    cube([FRONT_WEAPON_FIX_LENGTH, WEAPON_FIX_WIDTH, WEAPON_FIX_HEIGHT + 6]);
-                    translate([-5, FRONT_HOLE_DEPTH, FRONT_HOLE_HEIGHT]) cube([FRONT_WEAPON + 20, WEAPON_FIX_WIDTH, WEAPON_FIX_HEIGHT - 5]);
-                }
+            cube([FRONT_WEAPON_FIX_LENGTH, WEAPON_FIX_WIDTH, WEAPON_FIX_HEIGHT + 6]);
+            union() {
+                translate([-5, FRONT_HOLE_DEPTH, FRONT_HOLE_HEIGHT]) cube([FRONT_WEAPON + 20, WEAPON_FIX_WIDTH, WEAPON_FIX_HEIGHT - 5]);
                 balckHole();
+                metalBarsHole();
             }
-            metalBarsHole();
         }
     }
 }
@@ -99,13 +97,11 @@ module weaponFrontFix() {
 module weaponBackFix() {
     color("LightBlue") {
         difference() {
-            difference() {
-                union() {
-                    translate([FRONT_WEAPON_FIX_LENGTH, 0, -6]) cube([BACK_FIX_LENGHT + 2, ENCOCHE_WIDTH / 2, WEAPON_FIX_HEIGHT + 6]);
-                }
+            translate([FRONT_WEAPON_FIX_LENGTH, 0, -6]) cube([BACK_FIX_LENGHT + 2, ENCOCHE_WIDTH / 2, WEAPON_FIX_HEIGHT + 6]);
+            union() {
                 balckHole();
+                metalBarsHole();
             }
-            metalBarsHole();
         }
     }
 }
