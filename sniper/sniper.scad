@@ -102,10 +102,13 @@ module weaponFrontFix() {
 module weaponBackFix() {
     color("LightBlue") {
         difference() {
-            translate([FRONT_WEAPON_FIX_LENGTH, 0, -6]) cube([BACK_FIX_LENGHT + 2, ENCOCHE_WIDTH / 2, WEAPON_FIX_HEIGHT + 6]);
+            translate([FRONT_WEAPON_FIX_LENGTH, 0, -6]) union() {
+                cube([BACK_FIX_LENGHT + 2, ENCOCHE_WIDTH / 2, WEAPON_FIX_HEIGHT + 6]);
+            }
             union() {
                 balckHole();
                 metalBarsHole();
+                // #roundedBackFix();
             }
         }
     }
@@ -165,15 +168,19 @@ module encocheRailPolygon() {
 }
 
 /** VIEW **/
-assembling = true;
-if (assembling) {
+assembling = 1;
+if (assembling == 1) {
     weaponFrontFix();
     weaponBackFix();
     translate([0, WEAPON_FIX_WIDTH - ENCOCHE_LENGTH / 2, WEAPON_FIX_HEIGHT]) rail();
     translate([FRONT_WEAPON_FIX_LENGTH + BACK_FIX_LENGHT, 0, (ENCOCHE_WIDTH / 2) - 1.8]) rotate([-90, 0, 0]) canonHook();
-} else {
-    canonHook();
-    translate([0, 50, 0]) rail();
-    translate([0, 100, 0]) weaponFrontFix();
-    translate([0, 200, 0]) weaponBackFix();
+} else if (assembling == 2) {
+    rotate([90, 0, 0]) union() {
+        weaponBackFix();
+        translate([FRONT_WEAPON_FIX_LENGTH + BACK_FIX_LENGHT, 0, (ENCOCHE_WIDTH / 2) - 1.8]) rotate([-90, 0, 0]) canonHook();
+    }
+} else if (assembling == 3) {
+    rail();
+} else if (assembling == 4) {
+    rotate([90, 0, 0]) weaponFrontFix();
 }
