@@ -89,6 +89,11 @@ module weaponFrontFix() {
                 translate([-5, FRONT_HOLE_DEPTH, FRONT_HOLE_HEIGHT]) cube([FRONT_WEAPON + 20, WEAPON_FIX_WIDTH, WEAPON_FIX_HEIGHT - 5]);
                 balckHole();
                 metalBarsHole();
+
+                // Fixes to rail
+                railFixLength = 5 + (ENCOCHE_LENGTH / 2);
+                translate([20, WEAPON_FIX_WIDTH - railFixLength + 0.01, WEAPON_FIX_HEIGHT]) cube([25, railFixLength + 0.5, 3.5]);
+                translate([80, WEAPON_FIX_WIDTH - railFixLength + 0.01, WEAPON_FIX_HEIGHT]) cube([25, railFixLength + 0.5, 3.5]);
             }
         }
     }
@@ -121,13 +126,19 @@ module metalBarsHole() {
 // Rail : https://pinshape.com/items/53040-3d-printed-kar98k-picattiny-rail
 module rail() {
     color("LightGrey") {
-        translate([0, ENCOCHE_LENGTH / 2, 0]) cube([RAIL_LENGTH, RAIL_WIDTH - ENCOCHE_LENGTH, RAIL_HEIGHT]);
+        union() {
+            translate([0, ENCOCHE_LENGTH / 2, 0]) cube([RAIL_LENGTH, RAIL_WIDTH - ENCOCHE_LENGTH, RAIL_HEIGHT]);
 
-        // Create all the encoches
-        separator = 0;
-        for (i = [0:1:12]) {
-            translate([separator, RAIL_WIDTH / 2, RAIL_HEIGHT]) rotate([90, 0, 90]) encocheRail();
-            separator = i * (ENCOCHE_SEPARATOR + ENCOCHE_LENGTH);
+            // Create all the encoches
+            separator = 0;
+            for (i = [0:1:12]) {
+                translate([separator, RAIL_WIDTH / 2, RAIL_HEIGHT]) rotate([90, 0, 90]) encocheRail();
+                separator = i * (ENCOCHE_SEPARATOR + ENCOCHE_LENGTH);
+            }
+
+            // Fixes to front weapon
+            translate([20, -5, 0]) cube([25, 10, 3]);
+            translate([80, -5, 0]) cube([25, 10, 3]);
         }
     }
 }
