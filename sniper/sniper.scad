@@ -3,10 +3,10 @@ $fn = 100;
 /** MESURSES **/
 // Hook
 HOOK_LENGTH = 44;
-HOOK_WIDTH = 12;
-HOOK_HEIGHT = 6.5;
+HOOK_WIDTH = 13.5;
+HOOK_HEIGHT = 7.5;
 HOOK_FIX_HEIGHT = 5;
-HOOK_HOLE = 2.5;
+HOOK_HOLE = 2;
 HOOK_HOLE_RIGHT = 6.5;
 HOOK_HOLE_LEFT = 35;
 
@@ -52,13 +52,12 @@ module canonHook() {
     color("LightGreen") {
         difference() {
             union() {
-                cube([HOOK_LENGTH, HOOK_WIDTH, HOOK_HEIGHT]);
-                translate([4, HOOK_WIDTH / 2 + 1.5 / 2, HOOK_HEIGHT]) curveHook(1.5, HOOK_FIX_HEIGHT);
-                translate([HOOK_HOLE_LEFT - HOOK_FIX_HEIGHT - 4 , HOOK_WIDTH - 4 +2, HOOK_HEIGHT]) fixHook(HOOK_WIDTH - 4, HOOK_FIX_HEIGHT);
+                cube([HOOK_LENGTH, HOOK_WIDTH, ENCOCHE_WIDTH / 2]);
+                translate([HOOK_HOLE_LEFT - HOOK_FIX_HEIGHT - 4 , HOOK_WIDTH - 4 +2, ENCOCHE_WIDTH / 2]) fixHook(HOOK_WIDTH - 4, HOOK_FIX_HEIGHT);
             }
             union() {
                 translate([HOOK_HOLE_LEFT - 4, 2, -1]) cube([HOOK_WIDTH - 3, HOOK_WIDTH - 4, 20]);
-                translate([HOOK_HOLE_LEFT, 20, HOOK_HEIGHT / 2]) rotate([90, 0, 0]) cylinder(h=30, r=HOOK_HOLE);
+                translate([HOOK_HOLE_LEFT + 2, 20, (ENCOCHE_WIDTH / 2) / 2]) rotate([90, 0, 0]) cylinder(h=30, r=HOOK_HOLE);
             }
         }
     }
@@ -102,8 +101,8 @@ module weaponFrontFix() {
 module weaponBackFix() {
     color("LightBlue") {
         difference() {
-            translate([FRONT_WEAPON_FIX_LENGTH, 0, -6]) union() {
-                cube([BACK_FIX_LENGHT + 2, ENCOCHE_WIDTH / 2, WEAPON_FIX_HEIGHT + 6]);
+            translate([FRONT_WEAPON_FIX_LENGTH, 0, -7.5]) union() {
+                cube([BACK_FIX_LENGHT + 2, ENCOCHE_WIDTH / 2, WEAPON_FIX_HEIGHT + 13.5]);
             }
             union() {
                 balckHole();
@@ -115,7 +114,7 @@ module weaponBackFix() {
 }
 
 module balckHole() {
-    translate([125, -0.1, -10]) cube([BACK_HOLE_LENGHT - 20, BACK_HOLE_WIDTH + 10, BACK_HOLE_HEIGHT + 10]);
+    translate([125, -0.1, -10.1]) cube([BACK_HOLE_LENGHT - 20, BACK_HOLE_WIDTH + 10, BACK_HOLE_HEIGHT + 10]);
 }
 
 module metalBarsHole() {
@@ -158,11 +157,11 @@ module encocheRail() {
 module encocheRailPolygon() {
     polygon(points=[ 
         [0, 0],
-        [RAIL_WIDTH / 2 - ENCOCHE_LENGTH / 2, 0], 
+        [RAIL_WIDTH / 2 - ENCOCHE_LENGTH / 2, 0],
         [RAIL_WIDTH / 2, ENCOCHE_LENGTH / 2],
         [RAIL_WIDTH / 2 - ENCOCHE_LENGTH / 2, ENCOCHE_LENGTH], 
-        [ENCOCHE_HOLE / 2, ENCOCHE_LENGTH], 
-        [ENCOCHE_HOLE / 2, ENCOCHE_LENGTH / 2], 
+        [ENCOCHE_HOLE / 2, ENCOCHE_LENGTH],
+        [ENCOCHE_HOLE / 2, ENCOCHE_LENGTH / 2],
         [0, ENCOCHE_LENGTH / 2]
     ]);
 }
