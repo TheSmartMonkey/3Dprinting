@@ -19,6 +19,10 @@ module letterM() {
     translate([LETTER_LENGTH,-LETTER_HEIGHT-2.5,LETTER_HEIGHT]) rotate([0,180,0]) letterU();
 }
 
+module letterI() {
+    cube([LETTER_LENGTH+20,LETTER_RADIUS/2-2,LETTER_HEIGHT]);
+}
+
 
 /** HELPERS **/
 module letterUCylinder(lenght,radius,height) {
@@ -31,8 +35,11 @@ assembling = 1;
 if (assembling == 1) {
     translate([20,0,0]) letterU();
     translate([0,-50,0]) letterM();
+    translate([0,-125,0]) letterI();
 } else if (assembling == 2) {
     letterU();
 } else if (assembling == 3) {
     letterM();
+} else if (assembling == 4) {
+    letterI();
 }
