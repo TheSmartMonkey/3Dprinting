@@ -36,6 +36,7 @@ if (assembling == 1) {
     translate([20,0,0]) letterU();
     translate([0,-50,0]) letterM();
     translate([0,-125,0]) letterI();
+    translate([0,-120,0]) cube([8,120,8]); /* to connect all 3 letters */
 } else if (assembling == 2) {
     letterU();
 } else if (assembling == 3) {
