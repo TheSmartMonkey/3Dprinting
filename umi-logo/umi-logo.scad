@@ -23,32 +23,41 @@ module letterM() {
 }
 
 module letterI() {
-    cube([LETTER_LENGTH+20,LETTER_RADIUS/2-2,LETTER_HEIGHT]);
+    letterIRadius=LETTER_RADIUS/2-2;
+    difference() {
+        cube([LETTER_LENGTH+20,letterIRadius,LETTER_HEIGHT]);
+        translate([70,letterIRadius/2,0]) metalCylinder();
+    }
 }
 
 module bousoleArc() {
     arcInc=12;
     color(c="Gold") difference() {
-        cylinder(h=LETTER_HEIGHT,r=LETTER_RADIUS+arcInc);
-        translate([0,0,-1]) cylinder(h=LETTER_HEIGHT+2,r=LETTER_RADIUS+arcInc-2);
-        translate([-35,-10,-1]) cube([30,50,LETTER_HEIGHT+2]);
+        difference() {
+            cylinder(h=LETTER_HEIGHT,r=LETTER_RADIUS+arcInc);
+            translate([0,0,-1]) cylinder(h=LETTER_HEIGHT+2,r=LETTER_RADIUS+arcInc-2);
+            translate([-35,-10,-1]) cube([30,50,LETTER_HEIGHT+2]);
+        }
+        metalCylinder();
     }
 }
 
 module bousole() {
-    bousole1();
-    bousole2();
+    bousoleBlue();
+    bousoleYellow();
 }
 
-module bousole1() {
-    color(c="LightBlue") rotate([0,0,-35]) {
-        linear_extrude(LETTER_HEIGHT) polygon([[-BOUSOLE_LENGTH,0], [0,-BOUSOLE_WIDTH], [0,0], [0,BOUSOLE_WIDTH]]);
+module bousoleBlue() {
+    color(c="LightBlue") difference() {
+        rotate([0,0,-35]) linear_extrude(LETTER_HEIGHT) polygon([[-BOUSOLE_LENGTH,0], [0,-BOUSOLE_WIDTH], [0,0], [0,BOUSOLE_WIDTH]]);
+        metalCylinder();
     } 
 }
 
-module bousole2() {
-    color(c="Gold") rotate([0,0,-35]) {
-        linear_extrude(LETTER_HEIGHT) polygon([[0,0], [0,-BOUSOLE_WIDTH], [BOUSOLE_LENGTH,0], [0,BOUSOLE_WIDTH]]);
+module bousoleYellow() {
+    color(c="Gold") difference() {
+        rotate([0,0,-35]) linear_extrude(LETTER_HEIGHT) polygon([[0,0], [0,-BOUSOLE_WIDTH], [BOUSOLE_LENGTH,0], [0,BOUSOLE_WIDTH]]);
+        metalCylinder();
     } 
 }
 
@@ -56,6 +65,10 @@ module bousole2() {
 module letterUCylinder(lenght,radius,height) {
     cylinder(h=height,r=radius);
     translate([0,-radius,0]) cube([lenght,2*radius,height]);
+}
+
+module metalCylinder() {
+    translate([-30,0,LETTER_HEIGHT/2-0.25]) rotate([0,90,0]) cylinder(h=100,r=0.5);
 }
 
 /** VIEW **/
@@ -79,4 +92,8 @@ if (assembling == 1) {
 } else if (assembling == 5) {
     bousoleArc();
     bousole();
+} else if (assembling == 6) {
+    bousoleBlue();
+} else if (assembling == 7) {
+    bousoleYellow();
 }
