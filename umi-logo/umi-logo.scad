@@ -11,15 +11,13 @@ BOUSOLE_WIDTH=7;
 
 /** MODULES **/
 module letterU() {
-    difference() {
-        letterUCylinder(LETTER_LENGTH,LETTER_RADIUS,LETTER_HEIGHT);
-        translate([0,0,-1]) letterUCylinder(LETTER_LENGTH+1,LETTER_RADIUS-8,LETTER_HEIGHT+2);
-    }
+    initialLetterU();
+    lettreUSupport();
 }
 
 module letterM() {
-    translate([LETTER_LENGTH,0,LETTER_HEIGHT]) rotate([0,180,0]) letterU();
-    translate([LETTER_LENGTH,-LETTER_HEIGHT-2.5,LETTER_HEIGHT]) rotate([0,180,0]) letterU();
+    translate([LETTER_LENGTH,0,LETTER_HEIGHT]) rotate([0,180,0]) initialLetterU();
+    translate([LETTER_LENGTH,-LETTER_HEIGHT-2.5,LETTER_HEIGHT]) rotate([0,180,0]) initialLetterU();
 }
 
 module letterI() {
@@ -63,6 +61,21 @@ module bousoleYellow() {
 }
 
 /** HELPERS **/
+module initialLetterU() {
+    difference() {
+        letterUCylinder(LETTER_LENGTH,LETTER_RADIUS,LETTER_HEIGHT);
+        translate([0,0,-1]) letterUCylinder(LETTER_LENGTH+1,LETTER_RADIUS-8,LETTER_HEIGHT+2);
+    }
+}
+
+module lettreUSupport() {
+    supportLength=LETTER_RADIUS-3;
+    difference() {
+        translate([-20,-supportLength,0]) cube(size=[10, supportLength*2, LETTER_HEIGHT]);
+        translate([0,0,-1]) letterUCylinder(LETTER_LENGTH+1,LETTER_RADIUS-8,LETTER_HEIGHT+2);
+    }
+}
+
 module letterUCylinder(lenght,radius,height) {
     cylinder(h=height,r=radius);
     translate([0,-radius,0]) cube([lenght,2*radius,height]);
