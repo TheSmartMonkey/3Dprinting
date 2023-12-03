@@ -32,10 +32,11 @@ module letterI() {
 
 module bousoleArc() {
     arcInc=12;
+    arcHeigth=20;
     color(c="Gold") difference() {
-        difference() {
-            cylinder(h=LETTER_HEIGHT,r=LETTER_RADIUS+arcInc);
-            translate([0,0,-1]) cylinder(h=LETTER_HEIGHT+2,r=LETTER_RADIUS+arcInc-2);
+        translate([0,0,5]) difference() {
+            cylinder(h=arcHeigth,r=LETTER_RADIUS+arcInc);
+            translate([0,0,-1]) cylinder(h=arcHeigth+2,r=LETTER_RADIUS+arcInc-2);
             translate([-35,-10,-1]) cube([30,50,LETTER_HEIGHT+2]);
         }
         metalCylinder();
@@ -49,14 +50,14 @@ module bousole() {
 
 module bousoleBlue() {
     color(c="LightBlue") difference() {
-        rotate([0,0,-35]) linear_extrude(LETTER_HEIGHT) polygon([[-BOUSOLE_LENGTH,0], [0,-BOUSOLE_WIDTH], [0,0], [0,BOUSOLE_WIDTH]]);
+        translate([0,0,10]) rotate([0,0,-35]) linear_extrude(10) polygon([[-BOUSOLE_LENGTH,0], [0,-BOUSOLE_WIDTH], [0,0], [0,BOUSOLE_WIDTH]]);
         metalCylinder();
     } 
 }
 
 module bousoleYellow() {
     color(c="Gold") difference() {
-        rotate([0,0,-35]) linear_extrude(LETTER_HEIGHT) polygon([[0,0], [0,-BOUSOLE_WIDTH], [BOUSOLE_LENGTH,0], [0,BOUSOLE_WIDTH]]);
+        translate([0,0,10]) rotate([0,0,-35]) linear_extrude(10) polygon([[0,0], [0,-BOUSOLE_WIDTH], [BOUSOLE_LENGTH,0], [0,BOUSOLE_WIDTH]]);
         metalCylinder();
     } 
 }
@@ -93,7 +94,9 @@ if (assembling == 1) {
     bousoleArc();
     bousole();
 } else if (assembling == 6) {
-    bousoleBlue();
+    bousoleArc();
 } else if (assembling == 7) {
+    bousoleBlue();
+} else if (assembling == 8) {
     bousoleYellow();
 }
