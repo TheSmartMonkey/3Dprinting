@@ -5,6 +5,9 @@ LETTER_LENGTH=30;
 LETTER_RADIUS=20;
 LETTER_HEIGHT=30;
 
+BOUSOLE_LENGTH=13;
+BOUSOLE_WIDTH=7;
+
 
 /** MODULES **/
 module letterU() {
@@ -23,26 +26,36 @@ module letterI() {
     cube([LETTER_LENGTH+20,LETTER_RADIUS/2-2,LETTER_HEIGHT]);
 }
 
-module letterIPunct() {
-    arc();
+module bousoleArc() {
+    arcInc=12;
+    color(c="Gold") difference() {
+        cylinder(h=LETTER_HEIGHT,r=LETTER_RADIUS+arcInc);
+        translate([0,0,-1]) cylinder(h=LETTER_HEIGHT+2,r=LETTER_RADIUS+arcInc-2);
+        translate([-35,-10,-1]) cube([30,50,LETTER_HEIGHT+2]);
+    }
 }
 
 module bousole() {
-        rotate([0,0,0]) linear_extrude(5) polygon([[-10,0], [0,-5], [10,0], [0,5]]);
+    bousole1();
+    bousole2();
+}
+
+module bousole1() {
+    color(c="LightBlue") rotate([0,0,-35]) {
+        linear_extrude(LETTER_HEIGHT) polygon([[-BOUSOLE_LENGTH,0], [0,-BOUSOLE_WIDTH], [0,0], [0,BOUSOLE_WIDTH]]);
+    } 
+}
+
+module bousole2() {
+    color(c="Gold") rotate([0,0,-35]) {
+        linear_extrude(LETTER_HEIGHT) polygon([[0,0], [0,-BOUSOLE_WIDTH], [BOUSOLE_LENGTH,0], [0,BOUSOLE_WIDTH]]);
+    } 
 }
 
 /** HELPERS **/
 module letterUCylinder(lenght,radius,height) {
-        cylinder(h=height,r=radius);
-        translate([0,-radius,0]) cube([lenght,2*radius,height]);
-}
-
-module arc() {
-    difference() {
-        cylinder(h=LETTER_HEIGHT,r=LETTER_RADIUS);
-        translate([0,0,-1]) cylinder(h=LETTER_HEIGHT+2,r=LETTER_RADIUS-2);
-        translate([-20,0,-1]) cube([10,20,LETTER_HEIGHT+2]);
-    }
+    cylinder(h=height,r=radius);
+    translate([0,-radius,0]) cube([lenght,2*radius,height]);
 }
 
 /** VIEW **/
@@ -53,9 +66,9 @@ if (assembling == 1) {
         translate([0,-50,0]) letterM();
         translate([0,-125,0]) letterI();
     }
-    color(c="Gold") {
-        translate([60,-130,0]) letterIPunct();
-        translate([60,-130,0]) bousole();
+    translate([65,-121,0]) {
+        bousoleArc();
+        bousole();
     }
 } else if (assembling == 2) {
     letterU();
@@ -64,6 +77,6 @@ if (assembling == 1) {
 } else if (assembling == 4) {
     letterI();
 } else if (assembling == 5) {
-    letterIPunct();
+    bousoleArc();
     bousole();
 }
