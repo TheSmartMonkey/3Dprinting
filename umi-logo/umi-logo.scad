@@ -46,7 +46,7 @@ module arc() {
 }
 
 /** VIEW **/
-assembling = ;
+assembling = 1;
 if (assembling == 1) {
     color(c="LightBlue") {
         translate([20,0,0]) letterU();
