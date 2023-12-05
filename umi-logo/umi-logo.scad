@@ -94,7 +94,7 @@ module metalConection() {
         translate([LETTER_LENGTH/3,-LETTER_RADIUS+6,LETTER_HEIGHT/2-0.25]) rotate([90,0,0]) cylinder(h=20,r=0.5);
 }
 /** VIEW **/
-assembling = 2;
+assembling = 8;
 if (assembling == 1) {
     color(c="LightBlue") {
         translate([20,0,0]) letterU();
