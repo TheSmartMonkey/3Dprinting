@@ -11,8 +11,12 @@ BOUSOLE_WIDTH=7;
 
 /** MODULES **/
 module letterU() {
-    initialLetterU();
-    lettreUSupport();
+    difference() {
+        initialLetterU();
+        metalConection();
+
+    }
+    //lettreUSupport();
 }
 
 module letterM() {
@@ -25,6 +29,7 @@ module letterI() {
     difference() {
         cube([LETTER_LENGTH+20,letterIRadius,LETTER_HEIGHT]);
         translate([70,letterIRadius/2,0]) metalCylinder();
+        translate([LETTER_RADIUS,LETTER_RADIUS+20,0]) metalConection();
     }
 }
 
@@ -85,8 +90,11 @@ module metalCylinder() {
     translate([-30,0,LETTER_HEIGHT/2-0.25]) rotate([0,90,0]) cylinder(h=100,r=0.5);
 }
 
+module metalConection() {
+        translate([LETTER_LENGTH/3,-LETTER_RADIUS+6,LETTER_HEIGHT/2-0.25]) rotate([90,0,0]) cylinder(h=20,r=0.5);
+}
 /** VIEW **/
-assembling = 1;
+assembling = 2;
 if (assembling == 1) {
     color(c="LightBlue") {
         translate([20,0,0]) letterU();
